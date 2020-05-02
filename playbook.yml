@@ -1,0 +1,20 @@
+---
+- hosts: base
+
+  tasks:
+    - name: Make sure .ssh directory exists
+      file:
+        path: /home/pi/.ssh
+        state: directory
+        mode: 0700
+
+    - name: Update authorized_keys with public SSH key
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: pi
+        group: pi
+        mode: 0644
+      with_items:
+        - src: authorized_keys
+          dest: /home/pi/.ssh/authorized_keys

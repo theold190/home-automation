@@ -1,0 +1,5 @@
+[entrance_motion_detector]
+192.168.10.127
+
+[base:children]
+entrance_motion_detector
