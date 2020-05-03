@@ -1,5 +1,6 @@
 ---
 - hosts: base
+  become: yes
 
   tasks:
     - name: Make sure .ssh directory exists
@@ -20,3 +21,16 @@
       with_items:
         - src: authorized_keys
           dest: /home/pi/.ssh/authorized_keys
+
+    - name: Install convenience tools
+      apt:
+        name: htop
+        state: present
+
+    - name: Configure Vim editor
+      copy:
+        src: vimrc
+        dest: /home/pi/.vimrc
+        owner: pi
+        group: pi
+        mode: 0644
