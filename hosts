@@ -1,5 +1,13 @@
-[entrance_motion_detector]
+[kitchen_light]
+192.168.10.115
+
+[kitchen_music]
+192.168.10.138
+
+[entrance_light_and_music]
 192.168.10.127
 
 [base:children]
-entrance_motion_detector
+entrance_light_and_music
+kitchen_light
+kitchen_music
