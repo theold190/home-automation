@@ -1,0 +1,56 @@
+---
+- hosts: entrance_light_and_music
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    base_working_dir: /home/pi/entrance
+
+  tasks:
+    - name: Make sure needed Python tools are installed
+      apt:
+        pkg:
+        - python3
+        - python3-pip
+        state: present
+
+    - name: Install rpi-rf pip package
+      pip:
+        name: rpi-rf
+        state: present
+
+    - name: Create directory for code for entrance sensors
+      file:
+        path: "{{ base_working_dir }}"
+        state: directory
+        owner: pi
+        group: pi
+        mode: 0755
+
+    - name: Copy lights controlling scripts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: pi
+        group: pi
+        mode: 0755
+      with_items:
+        - src: lights_on.sh
+          dest: "{{ base_working_dir }}/lights_on.sh"
+        - src: lights_off.sh
+          dest: "{{ base_working_dir }}/lights_off.sh"
+
+    - name: Automatically turn on evening lights
+      cron:
+        name: "Turn on evening lights"
+        minute: "0"
+        hour: "18"
+        user: pi
+        job: "/home/pi/entrance/lights_on.sh >> /tmp/entrance_lights.log 2>&1"
+
+    - name: Automatically turn off evening lights
+      cron:
+        name: "Turn off evening lights"
+        minute: "30"
+        hour: "22"
+        user: pi
+        job: "/home/pi/entrance/lights_off.sh >> /tmp/entrance_lights.log 2>&1"

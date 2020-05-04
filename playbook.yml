@@ -2,3 +2,4 @@
 - hosts: all
 
 - import_playbook: base.yml
+- import_playbook: entrance_light_and_music.yml
