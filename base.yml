@@ -22,6 +22,10 @@
         - src: authorized_keys
           dest: /home/pi/.ssh/authorized_keys
 
+    - name: Set timezone to Europe/Stockholm
+      timezone:
+        name: Europe/Stockholm
+
     - name: Install convenience tools
       apt:
         name: htop
