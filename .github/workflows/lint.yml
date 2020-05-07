@@ -31,5 +31,5 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Run yamllint
       run: |
-        python3 -m pip install yamllint
+        python3 -m pip install setuptools yamllint
         python3 -m yamllint "${GITHUB_WORKSPACE}"
