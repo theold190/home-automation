@@ -10,8 +10,8 @@
     - name: Make sure needed Python tools are installed
       apt:
         pkg:
-        - python3
-        - python3-pip
+          - python3
+          - python3-pip
         state: present
 
     - name: Install rpi-rf pip package
