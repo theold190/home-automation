@@ -25,6 +25,8 @@
     - name: Set timezone to Europe/Stockholm
       timezone:
         name: Europe/Stockholm
+      notify:
+        - Restart cron
 
     - name: Install convenience tools
       apt:
@@ -38,3 +40,9 @@
         owner: pi
         group: pi
         mode: 0644
+
+  handlers:
+    - name: Restart cron
+      service:
+        name: cron
+        state: restarted

@@ -1,6 +1,7 @@
 ---
 - hosts: entrance_light_and_music
   become: yes
+
   vars:
     ansible_python_interpreter: /usr/bin/python3
     base_working_dir: /home/pi/entrance
