@@ -1,0 +1,62 @@
+---
+- hosts: kitchen_music
+
+  vars:
+    base_working_dir: /home/pi/music
+
+  tasks:
+    - name: Make sure needed tools are installed
+      apt:
+        pkg:
+          - git
+          - python
+          - python-pip
+        state: present
+      become: yes
+
+    - name: Make sure SoCo pip package is installed
+      pip:
+        name: soco
+        state: present
+
+    - name: Create directory for code for entrance sensors
+      file:
+        path: "{{ base_working_dir }}"
+        state: directory
+        owner: pi
+        group: pi
+        mode: 0755
+
+    - git:
+        repo: "https://github.com/PiSupply/Flick.git"
+        dest: "{{ base_working_dir }}/Flick/"
+        version: fdcfbefc86df493ff78b1035ce30c3ce2129f9b9
+      notify:
+        - Install and setup flicklib
+
+    - name: Copy music controlling scripts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: pi
+        group: pi
+        mode: 0755
+      with_items:
+        - src: kitchenMusic.py
+          dest: "{{ base_working_dir }}/kitchenMusic.py"
+
+    - name: Automatically start gesture monitoring script on reboot
+      cron:
+        name: "Start gesture monitoring script on reboot"
+        special_time: reboot
+        user: pi
+        job: "{{ base_working_dir }}/kitchenMusic.py >> /tmp/kitchen_music.log 2>&1"
+
+  handlers:
+    - name: Install and setup flicklib
+      shell: |
+        raspi-config nonint do_i2c 0
+        cd "{{ base_working_dir }}"/Flick/flick
+        python setup.py install
+        # here you should reboot the system
+      become: yes
