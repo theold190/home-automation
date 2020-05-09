@@ -42,16 +42,27 @@
 
     - name: Automatically turn on evening lights
       cron:
-        name: "Turn on evening lights"
+        name: "Turn on evening lights, {{ item.season }}"
         minute: "0"
-        hour: "18"
+        hour: "{{ item.hour }}"
+        month: "{{ item.month }}"
         user: pi
         job: "/home/pi/entrance/lights_on.sh >> /tmp/entrance_lights.log 2>&1"
+      with_items:
+        - season: "summer time"
+          hour: "20"
+          month: "5-9"
+        - season: "autumn time"
+          hour: "18"
+          month: "10-12"
+        - season: "winter time"
+          hour: "17"
+          month: "1-4"
 
     - name: Automatically turn off evening lights
       cron:
         name: "Turn off evening lights"
-        minute: "30"
-        hour: "22"
+        minute: "00"
+        hour: "23"
         user: pi
         job: "/home/pi/entrance/lights_off.sh >> /tmp/entrance_lights.log 2>&1"
