@@ -1,6 +1,5 @@
 ---
 - hosts: entrance_light_and_music
-  become: yes
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
@@ -13,6 +12,7 @@
           - python3
           - python3-pip
         state: present
+      become: yes
 
     - name: Make sure rpi-rf pip package is installed
       pip:

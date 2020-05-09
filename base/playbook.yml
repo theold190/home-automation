@@ -1,6 +1,5 @@
 ---
 - hosts: base
-  become: yes
 
   tasks:
     - name: Make sure .ssh directory exists
@@ -27,11 +26,13 @@
         name: Europe/Stockholm
       notify:
         - Restart cron
+      become: yes
 
     - name: Make sure convenience tools are installed
       apt:
         name: htop
         state: present
+      become: yes
 
     - name: Configure Vim editor
       copy:
@@ -46,3 +47,4 @@
       service:
         name: cron
         state: restarted
+      become: yes
