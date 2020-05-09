@@ -28,7 +28,7 @@
       notify:
         - Restart cron
 
-    - name: Install convenience tools
+    - name: Make sure convenience tools are installed
       apt:
         name: htop
         state: present

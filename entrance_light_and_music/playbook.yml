@@ -14,7 +14,7 @@
           - python3-pip
         state: present
 
-    - name: Install rpi-rf pip package
+    - name: Make sure rpi-rf pip package is installed
       pip:
         name: rpi-rf
         state: present
