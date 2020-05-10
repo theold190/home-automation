@@ -11,13 +11,9 @@
         pkg:
           - python3
           - python3-pip
+          - python3-venv
         state: present
       become: yes
-
-    - name: Make sure rpi-rf pip package is installed
-      pip:
-        name: rpi-rf
-        state: present
 
     - name: Create directory for code for entrance sensors
       file:
@@ -29,13 +25,21 @@
 
     - name: Copy lights controlling scripts
       copy:
-        src: "{{ item }}"
+        src: "{{ item.src }}"
         dest: "{{ base_working_dir }}"
         owner: pi
         group: pi
-        mode: 0755
+        mode: "{{ item.mode }}"
       with_items:
-        [ "lights_on.sh", "lights_off.sh" ]
+        - {src: "lights_on.sh", mode: "0755"}
+        - {src: "lights_off.sh", mode: "0755"}
+        - {src: "requirements.txt", mode: "0644"}
+
+    - name: Make sure venv is created
+      pip:
+        requirements: "{{ base_working_dir }}/requirements.txt"
+        virtualenv: "{{ base_working_dir }}/.venv"
+        virtualenv_python: python3
 
     - name: Automatically turn on evening lights
       cron:
