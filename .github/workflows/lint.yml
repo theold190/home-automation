@@ -28,8 +28,13 @@ jobs:
           sudo apt-get install shellcheck
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec shellcheck {} \;
 
-      - name: Run yamllint from pip
+      - name: Run yamllint
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
           python3 -m pip install yamllint
           python3 -m yamllint "${GITHUB_WORKSPACE}"
+
+      - name: Run pycodestyle
+        run: |
+          python3 -m pip install pycodestyle
+          python3 -m pycodestyle "${GITHUB_WORKSPACE}"
