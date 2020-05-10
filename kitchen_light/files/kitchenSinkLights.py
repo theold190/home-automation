@@ -11,9 +11,6 @@ relay = LED(4)
 lights_timeout = 180
 lights_off_timer = None
 
-offline_time_start = datetime.time(7, 00)
-offline_time_end = datetime.time(16)
-
 debug = True
 
 def getTimer(start = False):

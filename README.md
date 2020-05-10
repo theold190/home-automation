@@ -10,4 +10,5 @@ https://www.jeffgeerling.com/blog/running-ansible-within-windows
 
 Known issues
 ------------
-* Use "--ask-pass" when running first time, since authorized_keys might not be installed.
+* use "--ask-pass" when running first time, since authorized_keys might not be installed
+* manual restart is needed for the flicklib installation for a gesture sensor

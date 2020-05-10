@@ -11,8 +11,6 @@ def flick(start,finish):
     flick_txt = start + ' - ' + finish
 
 def play(sonos):
-  #if sonos.get_current_transport_info()['current_transport_state'] != 'PLAYING':
-  #  sonos.volume = 15
   sonos.play()
 
 def pause(sonos):
