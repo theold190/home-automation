@@ -11,13 +11,9 @@
           - git
           - python
           - python-pip
+          - python-virtualenv
         state: present
       become: yes
-
-    - name: Make sure SoCo pip package is installed
-      pip:
-        name: soco
-        state: present
 
     - name: Create directory for code for entrance sensors
       file:
@@ -36,18 +32,27 @@
 
     - name: Copy music controlling scripts
       copy:
-        src: kitchenMusic.py
+        src: "{{ item.src }}"
         dest: "{{ base_working_dir }}"
         owner: pi
         group: pi
-        mode: 0755
+        mode: "{{ item.mode }}"
+      with_items:
+        - {src: "kitchenMusic.py", mode: "0755"}
+        - {src: "start.sh", mode: "0755"}
+        - {src: "requirements.txt", mode: "0644"}
+
+    - name: Make sure venv is created
+      pip:
+        requirements: "{{ base_working_dir }}/requirements.txt"
+        virtualenv: "{{ base_working_dir }}/.venv"
 
     - name: Automatically start gesture monitoring script on reboot
       cron:
         name: "Start gesture monitoring script on reboot"
         special_time: reboot
         user: pi
-        job: "{{ base_working_dir }}/kitchenMusic.py >> /tmp/kitchen_music.log 2>&1"
+        job: "{{ base_working_dir }}/start.sh >> /tmp/kitchen_music.log 2>&1"
 
   handlers:
     - name: Install and setup flicklib
