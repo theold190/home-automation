@@ -1,10 +1,13 @@
 ---
 - hosts: base
 
+  vars:
+    base_working_dir: /home/pi
+
   tasks:
     - name: Make sure .ssh directory exists
       file:
-        path: /home/pi/.ssh
+        path: "{{ base_working_dir }}/.ssh"
         state: directory
         owner: pi
         group: pi
@@ -19,7 +22,7 @@
         mode: 0644
       with_items:
         - src: authorized_keys
-          dest: /home/pi/.ssh/authorized_keys
+          dest: "{{ base_working_dir }}/.ssh/authorized_keys"
 
     - name: Set timezone to Europe/Stockholm
       timezone:
@@ -30,17 +33,21 @@
 
     - name: Make sure convenience tools are installed
       apt:
-        name: htop
+        pkg:
+          - htop
+          - tofrodos
         state: present
       become: yes
 
     - name: Configure Vim editor
       copy:
         src: vimrc
-        dest: /home/pi/.vimrc
+        dest: "{{ base_working_dir }}/.vimrc"
         owner: pi
         group: pi
         mode: 0644
+      notify:
+        - Change line endings in Vim configuration
 
   handlers:
     - name: Restart cron
@@ -48,3 +55,6 @@
         name: cron
         state: restarted
       become: yes
+
+    - name: Change line endings in Vim configuration
+      shell: fromdos "{{ base_working_dir }}/.vimrc"
