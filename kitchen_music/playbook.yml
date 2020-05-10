@@ -36,14 +36,11 @@
 
     - name: Copy music controlling scripts
       copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
+        src: kitchenMusic.py
+        dest: "{{ base_working_dir }}"
         owner: pi
         group: pi
         mode: 0755
-      with_items:
-        - src: kitchenMusic.py
-          dest: "{{ base_working_dir }}/kitchenMusic.py"
 
     - name: Automatically start gesture monitoring script on reboot
       cron:

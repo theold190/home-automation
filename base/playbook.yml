@@ -15,14 +15,11 @@
 
     - name: Update authorized_keys with public SSH key
       copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
+        src: authorized_keys
+        dest: "{{ base_working_dir }}/.ssh"
         owner: pi
         group: pi
         mode: 0644
-      with_items:
-        - src: authorized_keys
-          dest: "{{ base_working_dir }}/.ssh/authorized_keys"
 
     - name: Set timezone to Europe/Stockholm
       timezone:

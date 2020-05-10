@@ -25,20 +25,14 @@
     - name: Copy sink light controlling scripts
       copy:
         src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
+        dest: "{{ base_working_dir }}"
         owner: pi
         group: pi
         mode: "{{ item.mode }}"
       with_items:
-        - src: kitchenSinkLights.py
-          dest: "{{ base_working_dir }}/kitchenSinkLights.py"
-          mode: '0755'
-        - src: start.sh
-          dest: "{{ base_working_dir }}/start.sh"
-          mode: '0755'
-        - src: requirements.txt
-          dest: "{{ base_working_dir }}/requirements.txt"
-          mode: '0644'
+        - {src: "kitchenSinkLights.py", mode: "0755"}
+        - {src: "start.sh", mode: "0755"}
+        - {src: "requirements.txt", mode: "0644"}
 
     - name: Make sure venv is created
       pip:

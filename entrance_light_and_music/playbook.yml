@@ -29,16 +29,13 @@
 
     - name: Copy lights controlling scripts
       copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
+        src: "{{ item }}"
+        dest: "{{ base_working_dir }}"
         owner: pi
         group: pi
         mode: 0755
       with_items:
-        - src: lights_on.sh
-          dest: "{{ base_working_dir }}/lights_on.sh"
-        - src: lights_off.sh
-          dest: "{{ base_working_dir }}/lights_off.sh"
+        [ "lights_on.sh", "lights_off.sh" ]
 
     - name: Automatically turn on evening lights
       cron:
