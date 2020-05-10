@@ -4,3 +4,4 @@
 - import_playbook: base/playbook.yml
 - import_playbook: entrance_light_and_music/playbook.yml
 - import_playbook: kitchen_music/playbook.yml
+- import_playbook: kitchen_light/playbook.yml

@@ -1,0 +1,54 @@
+---
+- hosts: kitchen_light
+
+  vars:
+    base_working_dir: /home/pi/sink_light
+
+  tasks:
+    - name: Make sure needed tools are installed
+      apt:
+        pkg:
+          - python
+          - python-pip
+          - python-virtualenv
+        state: present
+      become: yes
+
+    - name: Create directory for code for entrance sensors
+      file:
+        path: "{{ base_working_dir }}"
+        state: directory
+        owner: pi
+        group: pi
+        mode: 0755
+
+    - name: Copy sink light controlling scripts
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: pi
+        group: pi
+        mode: "{{ item.mode }}"
+      with_items:
+        - src: kitchenSinkLights.py
+          dest: "{{ base_working_dir }}/kitchenSinkLights.py"
+          mode: '0755'
+        - src: start.sh
+          dest: "{{ base_working_dir }}/start.sh"
+          mode: '0755'
+        - src: requirements.txt
+          dest: "{{ base_working_dir }}/requirements.txt"
+          mode: '0644'
+
+    - name: Make sure venv is created
+      pip:
+        requirements: "{{ base_working_dir }}/requirements.txt"
+        virtualenv: "{{ base_working_dir }}/.venv"
+        virtualenv_python: python3
+
+    - name: Automatically start sink motion detection script on reboot
+      cron:
+        name: "Start sink motion detection script on reboot"
+        special_time: reboot
+        user: pi
+        job: "{{ base_working_dir }}/start.sh >> /tmp/kitchen_sink.log 2>&1"
