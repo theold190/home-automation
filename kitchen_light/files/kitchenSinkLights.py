@@ -13,16 +13,19 @@ lights_off_timer = None
 
 debug = True
 
-def getTimer(start = False):
+
+def getTimer(start=False):
     timer = Timer(lights_timeout, turn_lights_off)
     if start:
         timer.start()
     return timer
 
+
 def turn_lights_off():
     if debug:
         print("{}: Turning lights off".format(datetime.datetime.now()))
     relay.on()
+
 
 def turn_lights_on():
     global lights_off_timer
@@ -30,6 +33,7 @@ def turn_lights_on():
         lights_off_timer.cancel()
     lights_off_timer = getTimer(True)
     relay.off()
+
 
 def motion_detected():
     if debug:
@@ -48,12 +52,12 @@ def run(pirs, singleRun=False):
                 current[i] = pir.motion_detected
 
                 # If the PIR is triggered
-                if current[i] == True and previous[i] == False:
+                if current[i] and not previous[i]:
                     # print("    Motion detected!")
                     # Record previous state
                     previous[i] = True
                 # If the PIR has returned to ready state
-                elif current[i] == False and previous[i] == True:
+                elif not current[i] and previous[i]:
                     # print("    No Motion")
                     previous[i] = False
                 else:
@@ -71,4 +75,3 @@ if __name__ == '__main__':
     relay.on()
 
     run([])
-
