@@ -44,36 +44,12 @@ def motion_detected():
     turn_lights_on()
 
 
-def run(pirs, singleRun=False):
-    current = [None for pir in pirs]
-    previous = [None for pir in pirs]
-    try:
-        while True:
-            for i, pir in enumerate(pirs):
-                # Read PIR state
-                current[i] = pir.motion_detected
-
-                # If the PIR is triggered
-                if current[i] and not previous[i]:
-                    # print("    Motion detected!")
-                    # Record previous state
-                    previous[i] = True
-                # If the PIR has returned to ready state
-                elif not current[i] and previous[i]:
-                    # print("    No Motion")
-                    previous[i] = False
-                else:
-                    # print("    Just started")
-                    previous[i] = current[i]
-
-            time.sleep(0.3)
-    except KeyboardInterrupt:
-        print("Leaving...")
-
-
 if __name__ == '__main__':
-    pir = MotionSensor(pin=14)
+    pir = MotionSensor(pin=14, pull_up=False, active_state=False)
     pir.when_motion = lambda: motion_detected()
     turn_lights_off()
-
-    run([])
+    try:
+        while True:
+            pir.wait_for_motion()
+    except KeyboardInterrupt:
+        print("Leaving...")
