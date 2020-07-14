@@ -6,7 +6,7 @@ import datetime
 import sys
 import time
 
-relay = LED(4)
+relays = [LED(3), LED(4)]
 
 lights_timeout = 180
 lights_off_timer = None
@@ -24,7 +24,7 @@ def getTimer(start=False):
 def turn_lights_off():
     if debug:
         print("{}: Turning lights off".format(datetime.datetime.now()))
-    relay.on()
+    map(lambda x: x.on(), relays)
 
 
 def turn_lights_on():
@@ -32,7 +32,7 @@ def turn_lights_on():
     if lights_off_timer:
         lights_off_timer.cancel()
     lights_off_timer = getTimer(True)
-    relay.off()
+    map(lambda x: x.off(), relays)
 
 
 def motion_detected():
@@ -72,6 +72,6 @@ def run(pirs, singleRun=False):
 if __name__ == '__main__':
     pir = MotionSensor(pin=14)
     pir.when_motion = lambda: motion_detected()
-    relay.on()
+    turn_lights_off()
 
     run([])
