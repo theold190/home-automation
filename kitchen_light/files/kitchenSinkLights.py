@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-from gpiozero import MotionSensor, LED
-from threading import Timer
-
+import argparse
 import datetime
 import sys
 import time
+
+from gpiozero import MotionSensor, LED
+from threading import Timer
 
 relays = [LED(3), LED(4)]
 
 lights_timeout = 180
 lights_off_timer = None
 
-debug = True
+debug = False
 
 
 def getTimer(start=False):
@@ -44,8 +45,18 @@ def motion_detected():
     turn_lights_on()
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Script to control kitchen sink lights.')
+    parser.add_argument('--debug', action='store_true', help='Enable debug mode')
+
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    pir = MotionSensor(pin=14, pull_up=False, active_state=False)
+    args = parse_args()
+    debug = args.debug
+
+    pir = MotionSensor(pin=14)
     pir.when_motion = lambda: motion_detected()
     turn_lights_off()
     try:
