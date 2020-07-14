@@ -57,7 +57,7 @@
     - name: Automatically turn off evening lights
       cron:
         name: "Turn off evening lights"
-        minute: "00"
-        hour: "23"
+        minute: "30"
+        hour: "22"
         user: pi
         job: "{{ base_working_dir }}/lights_off.sh >> /tmp/entrance_lights.log 2>&1"
