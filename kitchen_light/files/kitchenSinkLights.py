@@ -24,7 +24,8 @@ def getTimer(start=False):
 def turn_lights_off():
     if debug:
         print("{}: Turning lights off".format(datetime.datetime.now()))
-    map(lambda x: x.on(), relays)
+    for relay in relays:
+        relay.on()
 
 
 def turn_lights_on():
@@ -32,7 +33,8 @@ def turn_lights_on():
     if lights_off_timer:
         lights_off_timer.cancel()
     lights_off_timer = getTimer(True)
-    map(lambda x: x.off(), relays)
+    for relay in relays:
+        relay.off()
 
 
 def motion_detected():
