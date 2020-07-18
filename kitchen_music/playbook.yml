@@ -12,6 +12,7 @@
           - python
           - python-pip
           - python-virtualenv
+          - python-dev
         state: present
       become: yes
 
@@ -22,13 +23,6 @@
         owner: pi
         group: pi
         mode: 0755
-
-    - git:
-        repo: "https://github.com/PiSupply/Flick.git"
-        dest: "{{ base_working_dir }}/Flick/"
-        version: fdcfbefc86df493ff78b1035ce30c3ce2129f9b9
-      notify:
-        - Install and setup flicklib
 
     - name: Copy music controlling scripts
       copy:
@@ -42,10 +36,18 @@
         - {src: "start.sh", mode: "0755"}
         - {src: "requirements.txt", mode: "0644"}
 
+    - name: Clone flicklib repository
+      git:
+        repo: "https://github.com/PiSupply/Flick.git"
+        dest: "{{ base_working_dir }}/Flick/"
+        version: fdcfbefc86df493ff78b1035ce30c3ce2129f9b9
+
     - name: Make sure venv is created
       pip:
         requirements: "{{ base_working_dir }}/requirements.txt"
         virtualenv: "{{ base_working_dir }}/.venv"
+      notify:
+        - Install and setup flicklib
 
     - name: Automatically start gesture monitoring script on reboot
       cron:
@@ -59,6 +61,9 @@
       shell: |
         raspi-config nonint do_i2c 0
         cd "{{ base_working_dir }}"/Flick/flick
+        source {{ base_working_dir }}/.venv/bin/activate
         python setup.py install
         # here you should reboot the system
       become: yes
+      args:
+        executable: /bin/bash
