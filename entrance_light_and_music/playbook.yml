@@ -48,7 +48,7 @@
         hour: "{{ item.hour }}"
         month: "{{ item.month }}"
         user: pi
-        job: "{{ base_working_dir }}/lights_on.sh >> /tmp/entrance_lights.log 2>&1"
+        job: "/bin/bash {{ base_working_dir }}/lights_on.sh >> /tmp/entrance_lights.log 2>&1"
       with_items:
         - {season: "summer time", hour: "20", month: "5-9"}
         - {season: "autumn time", hour: "18", month: "10-12"}
@@ -60,4 +60,4 @@
         minute: "30"
         hour: "22"
         user: pi
-        job: "{{ base_working_dir }}/lights_off.sh >> /tmp/entrance_lights.log 2>&1"
+        job: "/bin/bash {{ base_working_dir }}/lights_off.sh >> /tmp/entrance_lights.log 2>&1"
