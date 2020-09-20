@@ -7,7 +7,11 @@
 [entrance_light_and_music]
 192.168.10.127
 
+[ambient_light_tv]
+192.168.10.107
+
 [base:children]
+ambient_light_tv
 entrance_light_and_music
 kitchen_light
 kitchen_music
