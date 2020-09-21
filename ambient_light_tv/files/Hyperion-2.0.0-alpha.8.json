@@ -135,6 +135,7 @@
 		"watchedVersionBranch": "Stable"
 	},
 	"grabberV4L2": {
+		"available_devices": "/dev/video0",
 		"blueSignalThreshold": 100,
 		"cecDetection": false,
 		"cropBottom": 0,
@@ -142,11 +143,14 @@
 		"cropRight": 0,
 		"cropTop": 0,
 		"device": "/dev/video0",
+		"device_inputs": "0",
 		"fps": 15,
+		"framerates": "auto",
 		"greenSignalThreshold": 40,
 		"height": 0,
 		"input": 0,
 		"redSignalThreshold": 40,
+		"resolutions": "auto",
 		"sDHOffsetMax": 0.75,
 		"sDHOffsetMin": 0.25,
 		"sDVOffsetMax": 0.75,
@@ -154,11 +158,7 @@
 		"signalDetection": true,
 		"sizeDecimation": 8,
 		"standard": "PAL",
-		"width": 0,
-		"available_devices": "/dev/video0",
-		"device_inputs": "0",
-		"resolutions": "auto",
-		"framerates": "auto"
+		"width": 0
 	},
 	"instCapture": {
 		"systemEnable": false,
