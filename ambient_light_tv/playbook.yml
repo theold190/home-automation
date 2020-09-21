@@ -1,0 +1,54 @@
+---
+- hosts: ambient_light_tv
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    base_working_dir: /home/pi/ambient
+    hyperion_version: 2.0.0-alpha.7
+    hyperion_deb_file: "Hyperion-{{ hyperion_version }}-Linux-armv6l.deb"
+    hyperion_base_download_url: "https://github.com/hyperion-project/hyperion.ng/releases/download"
+
+  tasks:
+    - name: Create working directory
+      file:
+        path: "{{ base_working_dir }}"
+        state: directory
+        owner: pi
+        group: pi
+        mode: 0755
+
+    - name: Check if Hyperion was installed
+      stat:
+        path: "{{ base_working_dir }}/hyperion_installed"
+      register: hyperion_installed
+
+    - block:
+        - name: Download Hyperion package
+          get_url:
+            url: "{{ hyperion_base_download_url }}/{{ hyperion_version }}/{{ hyperion_deb_file }}"
+            dest: "{{ base_working_dir }}/{{ hyperion_deb_file }}"
+            mode: '0644'
+
+        - name: Install a Hyperion .deb package
+          apt:
+            deb: "{{ base_working_dir }}/{{ hyperion_deb_file }}"
+            state: present
+          become: yes
+
+        - name: Copy Hyperion configuration file
+          copy:
+            src: "Hyperion-{{ hyperion_version }}.json"
+            dest: "{{ base_working_dir }}"
+            owner: pi
+            group: pi
+            mode: "0644"
+
+        - name: Create installation marker file
+          file:
+            path: "{{ base_working_dir }}/hyperion_installed"
+            state: touch
+
+      when: not hyperion_installed.stat.exists
+
+# No known way now to import the configuration. Need to be done manually through web interface.
+# hyperiond@pi.service is started automatically after install. Will start also after reboot.
