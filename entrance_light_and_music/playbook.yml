@@ -61,3 +61,5 @@
         hour: "22"
         user: pi
         job: "/bin/bash {{ base_working_dir }}/lights_off.sh >> /tmp/entrance_lights.log 2>&1"
+
+    - import_tasks: green_house.yml

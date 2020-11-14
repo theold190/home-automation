@@ -1,0 +1,62 @@
+---
+
+- name: Make sure needed tools are installed
+  apt:
+    pkg:
+      - g++
+      - make
+    state: present
+  become: yes
+
+- name: Check if NexaTransmitter repository is already present
+  command: ls -l "{{ base_working_dir }}/NexaTransmitter"
+  register: nexa_repo
+  changed_when: false
+
+- name: Clone NexaTransmitter repository
+  git:
+    repo: "https://github.com/henrikjonhed/NexaTransmitter.git"
+    dest: "{{ base_working_dir }}/NexaTransmitter"
+    version: 9160c4a089bf80a79b08684f8448293ea82e47d1
+  when: nexa_repo.rc != 0
+
+- name: Copy extra files to NexaTransmitter repository
+  copy:
+    src: "{{ item }}"
+    dest: "{{ base_working_dir }}/NexaTransmitter"
+  loop:
+    - NexaTransmitter/Makefile
+    - NexaTransmitter/NexaController.cpp
+
+- name: Compile NexaTransmitter binaries
+  command: make
+  args:
+    chdir: "{{ base_working_dir }}/NexaTransmitter"
+    creates: "{{ base_working_dir }}/NexaTransmitter/NexaController"
+
+- name: Copy green house controlling scripts
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ base_working_dir }}"
+    owner: pi
+    group: pi
+    mode: "{{ item.mode }}"
+  with_items:
+    - {src: "green_house_on.sh", mode: "0755"}
+    - {src: "green_house_off.sh", mode: "0755"}
+
+- name: Automatically turn on green house lights
+  cron:
+    name: "Turn on green house lights"
+    minute: "0"
+    hour: "8"
+    user: pi
+    job: "/bin/bash {{ base_working_dir }}/green_house_on.sh >> /tmp/green_house_lights.log 2>&1"
+
+- name: Automatically turn off green house lights
+  cron:
+    name: "Turn off green house lights"
+    minute: "0"
+    hour: "21"
+    user: pi
+    job: "/bin/bash {{ base_working_dir }}/green_house_off.sh >> /tmp/green_house_lights.log 2>&1"
