@@ -50,7 +50,7 @@
     hour: "{{ item.hour }}"
     user: pi
     job: |
-      "/bin/bash {{ base_working_dir }}/nexa_switch.sh {{ item.unit }} {{ item.state }} >> /tmp/nexa_switches.log 2>&1"
+      /bin/bash {{ base_working_dir }}/nexa_switch.sh {{ item.unit }} {{ item.state }} >> /tmp/nexa_switches.log 2>&1
   with_items:
     - {name: "green house", unit: "1", state: "on", hour: "8"}
     - {name: "green house", unit: "1", state: "off", hour: "21"}
