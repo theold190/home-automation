@@ -39,21 +39,21 @@ int main(int argc, char* argv[]) {
             if (i + 1 < argc) { // Make sure we aren't at the end of argv!
                 pin = std::stoi(std::string(argv[++i]));
             } else {
-                printf("--pin option requires one argument.");
+                std::cout << "--pin option requires one argument." << std::endl;
                 return 1;
             }
         } else if (arg == "--unit") {
             if (i + 1 < argc) { // Make sure we aren't at the end of argv!
                 unit = std::stoi(std::string(argv[++i]));
             } else {
-                printf("--unit option requires one argument.");
+                std::cout << "--unit option requires one argument." << std::endl;
                 return 1;
             }
         } else if (arg == "--remote-id") {
             if (i + 1 < argc) { // Make sure we aren't at the end of argv!
                 remote_id = std::stoi(std::string(argv[++i]));
             } else {
-                printf("--remote_id option requires one argument.");
+                std::cout << "--remote_id option requires one argument." << std::endl;
                 return 1;
             }
         } else if ((arg == "on") || (arg == "off")) {
@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
     }
     std::cout << "pin: " << pin << ", unit: " << unit << ", remote id: " << remote_id << std::endl;
     if ((pin < 0) || (unit < 0) || (remote_id < 0)) {
-        printf("Some required parameters were not provided\n");
+        std::cerr << "Some required parameters were not provided\n" << std::endl;
         show_usage(argv[0]);
         return 1;
     }
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     }
 
     NexaTransmitter remote(pin, remote_id);
-    printf("Turning %s unit %d\n", (on ? "on": "off"), unit);
+    std::cout << "Turning " << (on ? "on": "off") << " unit " << unit << std::endl;
     remote.setSwitch(on, unit);
     return EXIT_SUCCESS;
 }

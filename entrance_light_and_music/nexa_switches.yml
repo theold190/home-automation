@@ -32,7 +32,6 @@
   command: make
   args:
     chdir: "{{ base_working_dir }}/NexaTransmitter"
-    creates: "{{ base_working_dir }}/NexaTransmitter/NexaController"
 
 - name: Copy green house controlling scripts
   copy:
