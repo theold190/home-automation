@@ -42,21 +42,16 @@
     group: pi
     mode: "{{ item.mode }}"
   with_items:
-    - {src: "green_house_on.sh", mode: "0755"}
-    - {src: "green_house_off.sh", mode: "0755"}
+    - {src: "nexa_switch.sh", mode: "0755"}
 
-- name: Automatically turn on green house lights
+- name: Setup cron to turn Nexa switches on/off on required time
   cron:
-    name: "Turn on green house lights"
-    minute: "0"
-    hour: "8"
+    name: "Turn {{ item.state }} nexa switch for {{ item.name }}"
+    minute: "{{ item.minute }}"
+    hour: "{{ item.hour }}"
     user: pi
-    job: "/bin/bash {{ base_working_dir }}/green_house_on.sh >> /tmp/green_house_lights.log 2>&1"
-
-- name: Automatically turn off green house lights
-  cron:
-    name: "Turn off green house lights"
-    minute: "0"
-    hour: "21"
-    user: pi
-    job: "/bin/bash {{ base_working_dir }}/green_house_off.sh >> /tmp/green_house_lights.log 2>&1"
+    job: |
+      "/bin/bash {{ base_working_dir }}/nexa_switch.sh {{ item.unit }} {{ item.state }}>> /tmp/nexa_switches.log 2>&1"
+  with_items:
+    - {name: "green house", unit: "1", state: "on", hour: "8", minute: "0"}
+    - {name: "green house", unit: "1", state: "off", hour: "21", minute: "0"}
