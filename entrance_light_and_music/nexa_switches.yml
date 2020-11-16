@@ -53,11 +53,11 @@
     job: |
       /bin/bash {{ base_working_dir }}/nexa_switch.sh {{ item.unit }} {{ item.state }} >> /tmp/nexa_switches.log 2>&1
   with_items:
-    - {name: "green house",      unit: "1", state: "on",  hour: "8",  minute: "1"}
-    - {name: "green house",      unit: "1", state: "off", hour: "21", minute: "1"}
-    - {name: "decoration light", unit: "2", state: "on",  hour: "16", minute: "2", month: "11-12,1-2"}
+    - {name: "green house", unit: "1", state: "on", hour: "8", minute: "1"}
+    - {name: "green house", unit: "1", state: "off", hour: "21", minute: "1"}
+    - {name: "decoration light", unit: "2", state: "on", hour: "16", minute: "2", month: "11-12,1-2"}
     - {name: "decoration light", unit: "2", state: "off", hour: "22", minute: "32"}
-    - {name: "bedroom light",    unit: "3", state: "on",  hour: "16", minute: "3", month: "11-12,1-2"}
-    - {name: "bedroom light",    unit: "3", state: "on",  hour: "18", minute: "3", month: "3-4,10"}
-    - {name: "bedroom light",    unit: "3", state: "on",  hour: "20", minute: "3", month: "5-9"}
-    - {name: "bedroom light",    unit: "3", state: "off", hour: "22", minute: "33"}
+    - {name: "bedroom light", unit: "3", state: "on", hour: "16", minute: "3", month: "11-12,1-2"}
+    - {name: "bedroom light", unit: "3", state: "on", hour: "18", minute: "3", month: "3-4,10"}
+    - {name: "bedroom light", unit: "3", state: "on", hour: "20", minute: "3", month: "5-9"}
+    - {name: "bedroom light", unit: "3", state: "off", hour: "22", minute: "33"}
