@@ -17,10 +17,9 @@
         group: pi
         mode: 0755
 
-    - name: Check if Hyperion was installed
-      stat:
-        path: "{{ base_working_dir }}/hyperion_installed"
-      register: hyperion_installed
+    - name: Check installed version of Hyperion
+      shell: hyperiond --version | grep -I "Version" | cut -d':' -f 2 | cut -d' ' -f2
+      register: hyperion_installed_version
 
     - block:
         - name: Download Hyperion package
@@ -49,12 +48,9 @@
             group: pi
             mode: "0644"
 
-        - name: Create installation marker file
-          file:
-            path: "{{ base_working_dir }}/hyperion_installed"
-            state: touch
+        - debug:
+            msg:
+              - No known way now to import the configuration. Need to be done manually through web interface.
+              - hyperiond@pi.service is started automatically after install. Will start also after reboot.
 
-      when: not hyperion_installed.stat.exists
-
-# No known way now to import the configuration. Need to be done manually through web interface.
-# hyperiond@pi.service is started automatically after install. Will start also after reboot.
+      when: hyperion_installed_version.stdout != hyperion_version
