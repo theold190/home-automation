@@ -54,3 +54,23 @@
               - hyperiond@pi.service is started automatically after install. Will start also after reboot.
 
       when: hyperion_installed_version.stdout != hyperion_version
+
+    - name: Copy script to restart hyperion on errors
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ base_working_dir }}"
+        owner: pi
+        group: pi
+        mode: "{{ item.mode }}"
+      with_items:
+        - {src: "restart_hyperion_on_error.sh", mode: "0755"}
+
+    - name: Setup cron to resart Hyperion if it got a 'device not found' error
+      cron:
+        name: "Restart hyperion if got a 'device not found' error"
+        minute: "{{ item.minute }}"
+        user: pi
+        job: |
+          /bin/bash {{ base_working_dir }}/restart_hyperion_on_error.sh >> /tmp/hyperion_restart.log 2>&1
+      with_items:
+        - {minute: "*/5"}
