@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 # Sometimes hyperion service gets in a state that it stops function. In those cases you see errors in the logs, while
 # service continues to run. This script is meant to restart hyperion service whenever one of the following errors are

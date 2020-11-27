@@ -74,3 +74,12 @@
           /bin/bash {{ base_working_dir }}/restart_hyperion_on_error.sh >> /tmp/hyperion_restart.log 2>&1
       with_items:
         - {minute: "*/5"}
+
+    - name: Setup cron to resart device with Hyperion on regular basis
+      cron:
+        name: "Restart device nightly"
+        minute: 0
+        hour: 5
+        user: pi
+        job: |
+          /bin/bash sudo reboot
