@@ -23,28 +23,35 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Add local bin to path
+        run: |
+          echo "~/.local/bin" >> $GITHUB_PATH
+
       - name: Run shellcheck on bash scripts
         run: |
           sudo apt-get install shellcheck
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec shellcheck {} \;
 
-      - name: Run yamllint
+      - name: Upgrade pip and get needed packages
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install yamllint
-          python3 -m yamllint "${GITHUB_WORKSPACE}"
+
+      - name: Run yamllint
+        run: |
+          python3 -m pip install --no-warn-script-location yamllint
+          yamllint "${GITHUB_WORKSPACE}"
 
       - name: Run pycodestyle
         run: |
-          python3 -m pip install pycodestyle
-          python3 -m pycodestyle "${GITHUB_WORKSPACE}"
+          python3 -m pip install --no-warn-script-location pycodestyle
+          pycodestyle "${GITHUB_WORKSPACE}"
 
       - name: Run black
         run: |
-          python3 -m pip install black
-          python3 -m black --check "${GITHUB_WORKSPACE}"
+          python3 -m pip install --no-warn-script-location black
+          black --check "${GITHUB_WORKSPACE}"
 
       - name: Run ansible-lint
         run: |
-          python3 -m pip install ansible-lint
+          python3 -m pip install --no-warn-script-location ansible-lint
           ansible-lint "${GITHUB_WORKSPACE}"
