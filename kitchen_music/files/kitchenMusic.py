@@ -9,7 +9,7 @@ import soco
 @flicklib.flick()
 def flick(start, finish):
     global flick_txt
-    flick_txt = start + ' - ' + finish
+    flick_txt = start + " - " + finish
 
 
 def play(all_sonos):
@@ -24,10 +24,7 @@ def pause(all_sonos):
             sonos.pause()
 
 
-flick_action = {
-    'west - east': play,
-    'east - west': pause
-}
+flick_action = {"west - east": play, "east - west": pause}
 
 
 def discover_all_sonos():

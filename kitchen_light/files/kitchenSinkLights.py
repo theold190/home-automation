@@ -46,13 +46,15 @@ def motion_detected():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Script to control kitchen sink lights.')
-    parser.add_argument('--debug', action='store_true', help='Enable debug mode')
+    parser = argparse.ArgumentParser(
+        description="Script to control kitchen sink lights."
+    )
+    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
 
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = parse_args()
     debug = args.debug
 

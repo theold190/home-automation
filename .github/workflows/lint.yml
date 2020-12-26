@@ -38,3 +38,8 @@ jobs:
         run: |
           python3 -m pip install pycodestyle
           python3 -m pycodestyle "${GITHUB_WORKSPACE}"
+
+      - name: Run black
+        run: |
+          python3 -m pip install black
+          python3 -m black --check "${GITHUB_WORKSPACE}"
