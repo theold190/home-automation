@@ -63,7 +63,7 @@
         cd "{{ base_working_dir }}"/Flick/flick
         source {{ base_working_dir }}/.venv/bin/activate
         python setup.py install
-        # here you should reboot the system
+        reboot
       become: yes
       args:
         executable: /bin/bash

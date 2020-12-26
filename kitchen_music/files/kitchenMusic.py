@@ -12,12 +12,16 @@ def flick(start, finish):
     flick_txt = start + ' - ' + finish
 
 
-def play(sonos):
-    sonos.play()
+def play(all_sonos):
+    for sonos in all_sonos:
+        if sonos.is_coordinator:
+            sonos.play()
 
 
-def pause(sonos):
-    sonos.pause()
+def pause(all_sonos):
+    for sonos in all_sonos:
+        if sonos.is_coordinator:
+            sonos.pause()
 
 
 flick_action = {
@@ -26,27 +30,34 @@ flick_action = {
 }
 
 
-def main():
-    counter = 0
-    global flick_txt
-    flick_txt = ""
-
+def discover_all_sonos():
+    all_sonos = set()
     while True:
         try:
-            # sonos = soco.discovery.any_soco()
-            sonos = soco.SoCo('192.168.10.156')
+            all_sonos = soco.discover()
             break
         except Exception:
             print("Can't find sonos")
             time.sleep(5)
     print("Sonos detected")
+    return all_sonos
+
+
+def run_flick(all_sonos):
+    global flick_txt
+    flick_txt = ""
 
     while True:
         if flick_txt in flick_action.keys():
-            flick_action.get(flick_txt)(sonos)
+            flick_action.get(flick_txt)(all_sonos)
             print("flick_txt: %s" % (flick_txt))
             flick_txt = ""
         time.sleep(0.1)
+
+
+def main():
+    all_sonos = discover_all_sonos()
+    run_flick(all_sonos)
 
 
 if __name__ == "__main__":
