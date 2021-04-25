@@ -53,5 +53,5 @@ jobs:
 
       - name: Run ansible-lint
         run: |
-          python3 -m pip install --no-warn-script-location ansible-lint
+          python3 -m pip install --no-warn-script-location ansible ansible-lint
           ansible-lint "${GITHUB_WORKSPACE}"
