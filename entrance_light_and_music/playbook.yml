@@ -41,27 +41,4 @@
         virtualenv: "{{ base_working_dir }}/.venv"
         virtualenv_python: python3
 
-    - name: Automatically turn on evening lights
-      cron:
-        name: "Turn on evening lights, {{ item.season }}"
-        minute: "{{ item.minute | default(0) }}"
-        hour: "{{ item.hour }}"
-        month: "{{ item.month }}"
-        user: pi
-        job: "/bin/bash {{ base_working_dir }}/lights_on.sh >> /tmp/entrance_lights.log 2>&1"
-      with_items:
-        - {season: "summer time", hour: "20", month: "5-9"}
-        - {season: "autumn time", hour: "18", month: "3-4,10"}
-        - {season: "winter time", hour: "16", month: "11-12,1-2"}
-
-    - name: Automatically turn off evening lights
-      cron:
-        name: "Turn off evening lights"
-        minute: "{{ item.minute }}"
-        hour: "{{ item.hour }}"
-        user: pi
-        job: "/bin/bash {{ base_working_dir }}/lights_off.sh >> /tmp/entrance_lights.log 2>&1"
-      with_items:
-        - {hour: "22", minute: "30"}
-
     - import_tasks: nexa_switches.yml
