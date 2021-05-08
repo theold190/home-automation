@@ -23,7 +23,7 @@
         group: pi
         mode: 0755
 
-    - name: Copy lights controlling scripts
+    - name: Copy scripts for controlling lights and music
       copy:
         src: "{{ item.src }}"
         dest: "{{ base_working_dir }}"
@@ -33,6 +33,7 @@
       with_items:
         - {src: "lights_on.sh", mode: "0755"}
         - {src: "lights_off.sh", mode: "0755"}
+        - {src: "entrance_motion.py", mode: "0755"}
         - {src: "requirements.txt", mode: "0644"}
 
     - name: Make sure venv is created
@@ -40,5 +41,15 @@
         requirements: "{{ base_working_dir }}/requirements.txt"
         virtualenv: "{{ base_working_dir }}/.venv"
         virtualenv_python: python3
+
+    - name: Start monitoring entrance every morning
+      cron:
+        name: "Start monitoring entrance at 7:00 am"
+        minute: "{{ item.minute }}"
+        hour: "{{ item.hour }}"
+        user: pi
+        job: "{{ base_working_dir }}/.venv/bin/python {{ base_working_dir }}/entrance_motion.py --debug >> /tmp/entrance_music.log 2>&1"
+      with_items:
+        - {hour: "7", minute: "0"}
 
     - import_tasks: nexa_switches.yml

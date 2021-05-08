@@ -40,7 +40,7 @@ def turn_lights_on():
 
 def motion_detected():
     if debug:
-        print("{}: Motion detected....".format(datetime.datetime.now()))
+        print("{}: Motion detected...".format(datetime.datetime.now()))
 
     turn_lights_on()
 
