@@ -1,8 +1,8 @@
 #!/bin/bash
-set -ex
+set -e
 
 find_files() {
-    find . -not \( -path ./venv -prune \) -not \( -path ./dev-venv -prune \) -not \( -path ./.venv -prune \) -name $1
+    find \( -path "./venv" -o -path "./.venv" -o -path "./dev-venv" \) -prune -false -o  -name "$1"
 }
 python_files=$(find_files *.py)
 sh_files=$(find_files *.sh)

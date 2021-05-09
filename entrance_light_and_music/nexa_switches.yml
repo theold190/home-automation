@@ -24,6 +24,7 @@
   copy:
     src: "{{ item }}"
     dest: "{{ base_working_dir }}/NexaTransmitter"
+    mode: "0644"
   loop:
     - NexaTransmitter/Makefile
     - NexaTransmitter/NexaController.cpp
@@ -32,6 +33,7 @@
   command: make
   args:
     chdir: "{{ base_working_dir }}/NexaTransmitter"
+    creates: "{{ base_working_dir }}/NexaTransmitter/NexaController"
 
 - name: Copy green house controlling scripts
   copy:

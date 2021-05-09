@@ -52,6 +52,3 @@
         name: cron
         state: restarted
       become: yes
-
-    - name: Change line endings in Vim configuration
-      shell: fromdos "{{ base_working_dir }}/.vimrc"

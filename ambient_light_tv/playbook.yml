@@ -18,8 +18,11 @@
         mode: 0755
 
     - name: Check installed version of Hyperion
-      shell: hyperiond --version | grep -I "Version" | cut -d':' -f 2 | cut -d' ' -f2
+      shell: >
+        set -o pipefail && \
+        hyperiond --version | grep -I "Version" | cut -d':' -f 2 | cut -d' ' -f2
       register: hyperion_installed_version
+      changed_when: False
 
     - block:
         - name: Download Hyperion package
@@ -32,7 +35,6 @@
           apt:
             name: hyperion
             state: absent
-          ignore_errors: yes
 
         - name: Install a Hyperion .deb package
           apt:
@@ -48,7 +50,8 @@
             group: pi
             mode: "0644"
 
-        - debug:
+        - name: Notify user about needed manual actions
+          debug:
             msg:
               - No known way now to import the configuration. Need to be done manually through web interface.
               - hyperiond@pi.service is started automatically after install. Will start also after reboot.
