@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 find_files() {
     find . -not \( -path ./venv -prune \) -not \( -path ./dev-venv -prune \) -not \( -path ./.venv -prune \) -name $1

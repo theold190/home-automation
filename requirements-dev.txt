@@ -1,4 +1,7 @@
---no-binary=yamllint
+--no-binary=\
+ansible,\
+ansible-lint,\
+yamllint
 
 ansible
 ansible-lint
