@@ -30,7 +30,7 @@ jobs:
       - name: Prepare environment to run tools for linting
         run: |
           sudo apt-get install shellcheck
-          python3 -m pip install --upgrade pip setuptools wheel ansible
+          python3 -m pip install --upgrade pip setuptools wheel
 
       - name: Run linters
         run: |
