@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+find_files() {
+    find . -not \( -path ./venv -prune \) -not \( -path ./dev-venv -prune \) -not \( -path ./.venv -prune \) -name $1
+}
+python_files=$(find_files *.py)
+sh_files=$(find_files *.sh)
+
+printf 'Checking files with shellcheck...\n'
+shellcheck ${sh_files}
+
+printf 'Checking files with yamllint...\n'
+yamllint .
+
+printf 'Checking files with ansible-lint...\n'
+ansible-lint .
+
+printf 'Checking files with pycodestyle...\n'
+pycodestyle ${python_files}
+
+printf 'Checking files with black...\n'
+black --check --diff --quiet ${python_files}
+
+printf "Done\n"

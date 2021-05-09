@@ -27,31 +27,11 @@ jobs:
         run: |
           echo "~/.local/bin" >> $GITHUB_PATH
 
-      - name: Run shellcheck on bash scripts
+      - name: Prepare environment to run tools for linting
         run: |
           sudo apt-get install shellcheck
-          find "${GITHUB_WORKSPACE}" -name '*.sh' -exec shellcheck {} \;
+          python3 -m pip install --upgrade pip setuptools wheel ansible
 
-      - name: Upgrade pip and get needed packages
+      - name: Run linters
         run: |
-          python3 -m pip install --upgrade pip setuptools wheel
-
-      - name: Run yamllint
-        run: |
-          python3 -m pip install --no-warn-script-location yamllint
-          yamllint "${GITHUB_WORKSPACE}"
-
-      - name: Run pycodestyle
-        run: |
-          python3 -m pip install --no-warn-script-location pycodestyle
-          pycodestyle "${GITHUB_WORKSPACE}"
-
-      - name: Run black
-        run: |
-          python3 -m pip install --no-warn-script-location black
-          black --check --diff "${GITHUB_WORKSPACE}"
-
-      - name: Run ansible-lint
-        run: |
-          python3 -m pip install --no-warn-script-location ansible ansible-lint
-          ansible-lint "${GITHUB_WORKSPACE}"
+          cd "${GITHUB_WORKSPACE}" && source activate && ./verify
