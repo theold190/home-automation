@@ -1,5 +1,6 @@
 --no-binary=\
 ansible,\
+ansible-base,\
 ansible-lint,\
 yamllint
 
