@@ -48,7 +48,9 @@
         minute: "{{ item.minute }}"
         hour: "{{ item.hour }}"
         user: pi
-        job: "{{ base_working_dir }}/.venv/bin/python {{ base_working_dir }}/entrance_motion.py --debug >> /tmp/entrance_music.log 2>&1"
+        job: >-
+          {{ base_working_dir }}/.venv/bin/python
+          {{ base_working_dir }}/entrance_motion.py --debug >> /tmp/entrance_music.log 2>&1
       with_items:
         - {hour: "7", minute: "0"}
 
