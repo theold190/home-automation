@@ -6,16 +6,16 @@ find_files() {
 }
 python_files=$(find_files *.py)
 sh_files=$(find_files *.sh)
+yml_files=$(find_files *.yml)
 
 printf 'Checking files with shellcheck...\n'
 shellcheck ${sh_files}
 
 printf 'Checking files with yamllint...\n'
-yamllint .
-exit
+yamllint ${yml_files}
 
 printf 'Checking files with ansible-lint...\n'
-ansible-lint .
+ansible-lint ${yml_files}
 
 printf 'Checking files with pycodestyle...\n'
 pycodestyle ${python_files}
