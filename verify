@@ -12,6 +12,7 @@ shellcheck ${sh_files}
 
 printf 'Checking files with yamllint...\n'
 yamllint .
+exit
 
 printf 'Checking files with ansible-lint...\n'
 ansible-lint .
