@@ -1,3 +1,5 @@
+--no-binary=yamllint
+
 ansible-lint
 black
 pycodestyle
