@@ -4,7 +4,7 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
     base_working_dir: /home/pi/ambient
-    hyperion_version: 2.0.0-alpha.9
+    hyperion_version: 2.0.12
     hyperion_deb_file: "Hyperion-{{ hyperion_version }}-Linux-armv6l.deb"
     hyperion_base_download_url: "https://github.com/hyperion-project/hyperion.ng/releases/download"
 
@@ -23,6 +23,8 @@
         hyperiond --version | grep -I "Version" | cut -d':' -f 2 | cut -d' ' -f2
       register: hyperion_installed_version
       changed_when: False
+      args:
+        executable: /bin/bash
 
     - block:
         - name: Download Hyperion package
@@ -35,6 +37,7 @@
           apt:
             name: hyperion
             state: absent
+          become: yes
 
         - name: Install a Hyperion .deb package
           apt:

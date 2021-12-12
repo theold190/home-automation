@@ -75,8 +75,8 @@
 		"imageToLedMappingType": "multicolor_mean"
 	},
 	"device": {
-		"colorOrder": "bgr",
-		"hardwareLedCount": 1,
+		"colorOrder": "rgb",
+		"hardwareLedCount": 78,
 		"invert": false,
 		"latchTime": 0,
 		"output": "/dev/spidev0.0",
@@ -109,42 +109,40 @@
 		"type": "effect"
 	},
 	"forwarder": {
-		"enable": false,
-		"flat": [
-			"127.0.0.1:19401"
-		],
-		"json": [
-			"127.0.0.1:19446"
-		]
+		"enable": false
 	},
 	"framegrabber": {
 		"cropBottom": 0,
 		"cropLeft": 0,
 		"cropRight": 0,
 		"cropTop": 0,
-		"frequency_Hz": 10,
+		"device": "auto",
+		"enable": false,
+		"fps": 10,
 		"height": 45,
+		"input": 0,
 		"pixelDecimation": 8,
-		"type": "auto",
 		"width": 80
 	},
 	"general": {
+		"configVersion": "2.0.12",
 		"name": "My Hyperion Config",
+		"previousVersion": "2.0.12",
 		"showOptHelp": true,
 		"watchedVersionBranch": "Stable"
 	},
 	"grabberV4L2": {
 		"blueSignalThreshold": 100,
 		"cecDetection": false,
-		"cropBottom": 0,
-		"cropLeft": 0,
-		"cropRight": 0,
-		"cropTop": 0,
 		"device": "/dev/video0",
-		"fps": 15,
+		"enable": true,
+		"flip": "NO_CHANGE",
+		"fps": 29,
+		"fpsSoftwareDecimation": 0,
 		"greenSignalThreshold": 40,
-		"height": 0,
+		"height": 480,
 		"input": 0,
+		"noSignalCounterThreshold": 200,
 		"redSignalThreshold": 15,
 		"sDHOffsetMax": 0.75,
 		"sDHOffsetMin": 0.25,
@@ -152,17 +150,28 @@
 		"sDVOffsetMin": 0.25,
 		"signalDetection": true,
 		"sizeDecimation": 8,
-		"standard": "PAL",
-		"width": 0,
-		"available_devices": "/dev/video0",
+		"width": 720,
+		"available_devices": "usbtv",
+		"hardware_brightness": 448,
+		"hardware_contrast": 464,
+		"hardware_saturation": 512,
+		"hardware_hue": 0,
 		"device_inputs": "0",
-		"resolutions": "auto",
-		"framerates": "auto"
+		"encoding": "YUYV",
+		"resolutions": "0",
+		"cropLeft": 0,
+		"cropRight": 0,
+		"cropTop": 0,
+		"cropBottom": 0,
+		"framerates": "29",
+		"standard": "PAL"
 	},
 	"instCapture": {
 		"systemEnable": false,
+		"systemGrabberDevice": "NONE",
 		"systemPriority": 250,
 		"v4lEnable": true,
+		"v4lGrabberDevice": "NONE",
 		"v4lPriority": 240
 	},
 	"jsonServer": {
@@ -685,7 +694,6 @@
 		"timeout": 5
 	},
 	"smoothing": {
-		"continuousOutput": true,
 		"enable": true,
 		"time_ms": 200,
 		"type": "linear",
